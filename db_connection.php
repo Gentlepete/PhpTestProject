@@ -19,7 +19,7 @@ class connection
         {
             if ($this->con = mysqli_connect($this->host, $this->user))
             {
-                echo "OK";
+                //echo "OK";
                 mysqli_select_db($this->con, $this->db);
             }
             else

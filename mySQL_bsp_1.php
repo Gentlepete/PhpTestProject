@@ -12,17 +12,13 @@ and open the template in the editor.
     <body>
         <h1>Würfelspiel</h1>
         <?php
-        include "db_connection.php";
+        require_once "db_connection.php";
         
         $con = new connection();
         $con->connect();
         
         $val = $con->query("SELECT 1 FROM spieler");
-        if($val !== FALSE)
-        {
-           echo "<p>Tabelle existiert</p>";
-        }
-        else
+        if($val == FALSE)
         {
             echo "<p>Tabelle existiert nicht und wird erstellt.</p>";
             $sql = "CREATE TABLE spieler (
@@ -36,21 +32,28 @@ and open the template in the editor.
         
         $sql = "SELECT * FROM `spieler`";
         $res = $con->query($sql);
-
-        while($dsatz = mysqli_fetch_assoc($res))
-        {
-//            foreach($dsatz as $key => $value)
-//            {
-//                echo $value . "<br>";
-//            }
-            echo $dsatz["name"]
-                .$dsatz["anzahl_spiele"]
-                .$dsatz["anzahl_gewinne"]
-                ."<br>";    
-        }
+        
+        echo "<table border=1>"
+                . "<tr>"
+                    . "<td>Name</td>"
+                    . "<td>Gespielte Spiele</td>"
+                    . "<td>Gewonnene Spiele</td>"
+                . "<tr>";
+                while($dsatz = mysqli_fetch_assoc($res))
+                {
+                    echo "<tr>"
+                        ."<td>".$dsatz['name']."</td>"
+                        ."<td>".$dsatz['anzahl_spiele']."</td>"
+                        ."<td>".$dsatz['anzahl_gewinne']."</td>"
+                        ."</tr>";    
+                }
+        echo "</table>";
 
         $con->close();
         ?>
-        <a href="create_spieler.html">Neuer Spieler</a>
+        <br>
+        <a href="create_spieler.html">Neuer Spieler</a><br>
+        <a href="neues_spiel.html">Neues Spiel</a>
+        
     </body>
 </html>
